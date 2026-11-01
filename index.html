@@ -567,18 +567,24 @@ function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show')
 
 /* ---------- data ---------- */
 const MEMBERS=[
- {id:'daniel',no:'01',zh:'鄭慕義',en:'Daniel',store:'988',cap:true,
-  line:'帶著大家一路從內湖、汐止殺到台中的隊長。今天場上場下都有我們挺你。'},
- {id:'rita',no:'02',zh:'余如茜',en:'Rita',store:'988',
-  line:'報名表、保險名單、訂房一手包辦，這趟能成行你功不可沒，今天換大家照顧你。'},
- {id:'ana',no:'03',zh:'朱婉瑜',en:'Ana',store:'988',
-  line:'每一個關鍵分都值得被歡呼，打得開心最重要，我們都在場邊幫你喊。'},
- {id:'jerry',no:'04',zh:'張哲瑋',en:'Jerry',store:'988',
-  line:'穩穩打、享受每一拍，贏球大家一起叫，輸球大家一起扛。'},
- {id:'kai',no:'05',zh:'游皓凱',en:'Kai',store:'988',
-  line:'今天的目標：盡情揮拍、平安回家，順便把好吃的都吃一輪。'},
- {id:'bebe',no:'06',zh:'沈采妏',en:'Bebe',store:'2952',late:true,
-  line:'從另一間店（2952）趕來的夥伴，11/3 一早直接到場館會合。內湖 × 汐止的「聯合」就是因為有你。'}
+ {id:'daniel',no:'01',zh:'鄭慕義',en:'Daniel',store:'988',cap:true,title:'隊長・球拍社社長',
+  line:'球拍社社長親自領軍！帶著大家一路從內湖、汐止殺到台中，今天場上場下都有我們挺你。',
+  greet:'社長大人駕到！今天的球隊就交給你帶了，我們全力跟上 💪'},
+ {id:'rita',no:'02',zh:'余如茜',en:'小黑',store:'988',title:'客服部門的支柱',
+  line:'客服部門的支柱，平常扛住所有顧客，今天換你在場上盡情揮拍，大家幫你扛！',
+  greet:'客服部的支柱報到！平常照顧大家辛苦了，今天就專心打球、好好放鬆 🖤'},
+ {id:'ana',no:'03',zh:'朱婉瑜',en:'Ana',store:'988',title:'內湖店店長',
+  line:'內湖店店長親自下場！平常顧好整間店，今天換我們在場邊幫你喊到最大聲。',
+  greet:'店長好！今天店裡的事先放一邊，換大家罩你，打得開心最重要 🏸'},
+ {id:'jerry',no:'04',zh:'張哲瑋',en:'Jerry',store:'988',title:'行程規劃人',
+  line:'這份行程、賽程、宵夜和聚餐清單的幕後整理人。穩穩打、享受每一拍！',
+  greet:'規劃人本人！行程都幫大家排好了，今天輪到你好好享受比賽 🙌'},
+ {id:'kai',no:'05',zh:'游皓凱',en:'Kai',store:'988',title:'強力新銳 COD',
+  line:'強力新銳 COD（Captain of Day）！店裡值班罩得住，球場上也一樣罩得住。',
+  greet:'COD 新銳上線！今天場上也拿出值班時的氣勢，衝一波 🔥'},
+ {id:'bebe',no:'06',zh:'沈采妏',en:'Bebe',store:'2952',late:true,title:'汐止店唯一支援夥伴',
+  line:'全隊唯一從汐止店來支援的夥伴！內湖 × 汐止的「聯合」就是因為有你，11/3 一早場館見。',
+  greet:'汐止店的唯一代表！謝謝你來支援，有你我們才是真正的聯合隊 🤝'}
 ];
 const COURTS=['A','B','C','D','E','F'];
 const SLOTS=['09:00','10:00','11:00'];
@@ -656,7 +662,7 @@ function renderWho(){
   if(me){
     const ms=ourGroupMatches();
     const first=ms[0];
-    g.innerHTML=`<b>嗨 ${esc(me.en)}！</b> 你是 <b>#${me.no}${me.cap?" 隊長":""}</b>，今天也要打得開心 🏸`+(me.late?"<br>你 11/3 早上直接到場館，<b>08:00 前到南屯運動中心</b>跟大家會合。":"")+
+    g.innerHTML=`<b>嗨 ${esc(me.en)}！</b> ${esc(me.greet)}<br><span class="small" style="color:var(--silver)">#${me.no}・${esc(me.title)}</span>`+(me.late?"<br>你 11/3 早上直接到場館，<b>08:00 前到南屯運動中心</b>跟大家會合。":"")+
       (first?`<br>我們第一場：<b>${first.start} ${first.court} 場（#${first.no}）</b>，${first.s===0?'08:30 前要完成檢錄':'記得提前 30 分鐘檢錄'}。`:'<br>分組出爐後到「賽程表」點選我們的位置，你的專屬時程就會出現。');
     g.classList.add('show'); pill.hidden=false; pill.textContent=`#${me.no} ${me.en}`;
   } else { g.classList.remove('show'); pill.hidden=true; }
@@ -832,7 +838,7 @@ function renderMembers(){
       ${st.me===m.id?'<span class="badge-me">我</span>':''}
       <div class="num"><small>${m.cap?'CAPTAIN':'PLAYER'}</small>#${m.no}</div>
       <div class="nm">${esc(m.zh)}<span>${esc(m.en)}</span></div>
-      ${m.cap?'<div><span class="role cap">隊長</span></div>':''}
+      <div><span class="role ${m.cap?'cap':''}">${esc(m.title)}</span></div>
       <div class="line">${esc(m.line)}</div>
       <div class="foot"><div class="prog" title="行李進度"><i style="width:${pr}%"></i></div><span class="pp">${pr}%</span><button class="cheer" data-cheer="${m.id}">⚡ ${cheers[m.id]||0}</button></div>
     </div>`}).join('');
